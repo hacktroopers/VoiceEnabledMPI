@@ -77,24 +77,32 @@ function createFavoriteColorAttributes(favoriteColor) {
 /**
  * Sets the color in the session and prepares the speech to reply to the user.
  */
-function getFirstAvailableAppointment(intent, session, callback) {
+function markInspectionCondition(intent, session, callback) {
     const cardTitle = intent.name;
-    const dealerSlot = intent.slots.dealer;
+    const inspectionItemSlot = intent.slots.InspectionItem;
+    const conditionSlot = intent.slots.condition;
     let repromptText = '';
-    let sessionAttributes = {};
+    let sessionAttributes = session.attributes;
     let availableTimes = '';
     const shouldEndSession = false;
     let speechOutput = '';
 
-    if (dealerSlot) {
-        const dealerName = dealerSlot.value;
-        availableTimes = '5:30';
-        speechOutput = `First available timeslot at ${dealerName} is ${availableTimes}. `;
-        repromptText = "Do you want me to create an appointment?";
+    if (inspectionItemSlot) {
+        const inspectionItemName = inspectionItemSlot.value;
+        const condition = conditionSlot.value;
+        sessionAttributes.inspectionItemName = condition;
+        speechOutput = `Marked `;
+        for (var key in sessionAttributes) {
+          if (sessionAttributes.hasOwnProperty(key)) {
+            console.log(key + " -> " + sessionAttributes[key]);
+            speechOutput = ` ${key} as ${sessionAttributes[key]}`;
+          }
+        }
+        repromptText = "Do you want continue inspection?";
     } else {
-        speechOutput = "I'm not able to find the dealer. Please try again.";
-        repromptText = "I'm not able to find the dealer. You can say " +
-            ' Get first available appointment at Whitefish volkswagen';
+        speechOutput = "I dint get that. Please try again.";
+        repromptText = "I dint get what you are saying. You can say " +
+            ' Mark Battery condition good';
     }
 
     callback(sessionAttributes,
@@ -131,8 +139,8 @@ function onIntent(intentRequest, session, callback) {
     const intentName = intentRequest.intent.name;
 
     // Dispatch to your skill's intent handlers
-    if (intentName === 'GetFirstAvailableAppointment') {
-        getFirstAvailableAppointment(intent, session, callback);
+    if (intentName === 'MarkInspectionCondition') {
+        markInspectionCondition(intent, session, callback);
     } else if (intentName === 'AMAZON.HelpIntent') {
         getWelcomeResponse(callback);
     } else if (intentName === 'AMAZON.StopIntent' || intentName === 'AMAZON.CancelIntent') {
