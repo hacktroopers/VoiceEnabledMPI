@@ -1,0 +1,23 @@
+{
+  "intents": [
+    {
+      "slots": [
+        {
+          "name": "InspectionItem",
+          "type": "InspectionItemType"
+        },
+        {
+          "name": "Condition",
+          "type": "ConditionType"
+        }
+      ],
+      "intent": "MarkInspectionCondition"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    }
+  ]
+}
