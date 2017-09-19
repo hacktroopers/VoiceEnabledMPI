@@ -48,11 +48,11 @@ function getWelcomeResponse(callback) {
     // If we wanted to initialize the session to have some attributes we could add those here.
     const sessionAttributes = {};
     const cardTitle = 'Welcome';
-    const speechOutput = 'Welcome to the Alexa voice appointment scheduling ' +
-        'If you want to look up first available appointment you can say, get first available appointment for whitefish volkswagen';
+    const speechOutput = 'Welcome to the Alexa voice enabled multi point inspection ' +
+        'To get started, say the inspection item ,followed by its condition. For eg, Mark battery condition as fair';
     // If the user either does not reply to the welcome message or says something that is not
     // understood, they will be prompted again with this text.
-    const repromptText = 'If you want to look up first available appointment you can say, get first available appointment for whitefish volkswagen';
+    const repromptText = 'Say Mark Battery condition as fair';
     const shouldEndSession = false;
 
     callback(sessionAttributes,
@@ -61,7 +61,7 @@ function getWelcomeResponse(callback) {
 
 function handleSessionEndRequest(callback) {
     const cardTitle = 'Session Ended';
-    const speechOutput = 'Thank you for trying the Alexa Skills Kit sample. Have a nice day!';
+    const speechOutput = 'Thank you for trying the Alexa voice enabled multi point inspection. Have a nice day!';
     // Setting this to true ends the session and exits the skill.
     const shouldEndSession = true;
 
@@ -80,7 +80,7 @@ function createFavoriteColorAttributes(favoriteColor) {
 function markInspectionCondition(intent, session, callback) {
     const cardTitle = intent.name;
     const inspectionItemSlot = intent.slots.InspectionItem;
-    const conditionSlot = intent.slots.condition;
+    const conditionSlot = intent.slots.Condition;
     let repromptText = '';
     let sessionAttributes = session.attributes;
     let availableTimes = '';
@@ -90,12 +90,13 @@ function markInspectionCondition(intent, session, callback) {
     if (inspectionItemSlot) {
         const inspectionItemName = inspectionItemSlot.value;
         const condition = conditionSlot.value;
-        sessionAttributes.inspectionItemName = condition;
+        var sessionKey = inspectionItemName;
+        sessionAttributes[sessionKey] = condition;
         speechOutput = `Marked `;
         for (var key in sessionAttributes) {
           if (sessionAttributes.hasOwnProperty(key)) {
             console.log(key + " -> " + sessionAttributes[key]);
-            speechOutput = ` ${key} as ${sessionAttributes[key]}`;
+            speechOutput = speechOutput +` ${key} as ${sessionAttributes[key]}`;
           }
         }
         repromptText = "Do you want continue inspection?";
