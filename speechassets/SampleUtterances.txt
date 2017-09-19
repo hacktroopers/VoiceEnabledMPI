@@ -1,0 +1,3 @@
+MarkInspectionCondition Mark {InspectionItem} as {Condition}
+MarkInspectionCondition {InspectionItem} is {Condition}
+MarkInspectionCondition Mark {InspectionItem} {Condition}
