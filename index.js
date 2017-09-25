@@ -5,7 +5,7 @@ var Alexa = require('alexa-sdk');
 exports.handler = function(event, context, callback){
     var alexa = Alexa.handler(event, context, callback);
 	alexa.appId = "amzn1.ask.skill.f63c8bdf-dce3-43a8-abd0-c6e712218eb3";
-	alexa.dynamoDBTableName = 'Inspections';
+	alexa.dynamoDBTableName = 'VehicleInspection';
 	alexa.registerHandlers(handlers);
 	alexa.execute();
 };
@@ -22,7 +22,13 @@ function markVehicleCondition(sessionAttributes, inspectionItem, condition) {
 	var inspection = sessionAttributes["mpiInspection"];
 	var inspectionMap = {};
 	inspectionMap[inspectionItem] = condition;
-	inspection['inspections'].push(inspectionMap);
+	if(inspection['inspections'] != null) {
+		inspection['inspections'].push(inspectionMap);
+	}
+	else {
+	 inspection['inspections'] = [];
+	 inspection['inspections'].push(inspectionMap);
+	}
     console.log("Marked condition" + JSON.stringify(inspection));
     sessionAttributes['mpiInspection'] = inspection;
 }
@@ -79,9 +85,8 @@ var handlers = {
     
     'AMAZON.StopIntent': function() {
         var sessionAttributes = this.event.session.attributes;
-    	var inspectionObject = sessionAttributes["currentInspection"];  
-    	this.attributes['yourAttribute'] = 'value';
-        console.log("TODO Persist inspection object:" + JSON.stringify(inspection));
+    	var inspectionObject = sessionAttributes["mpiInspection"];  
+    	this.attributes[inspectionObject.id] = inspectionObject;
     	return this.emit(':tell', 'Multi point inspection saved successfully');
     	
     }
