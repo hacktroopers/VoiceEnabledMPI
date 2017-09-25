@@ -1,0 +1,49 @@
+{
+  "session": {
+    "new": true,
+    "sessionId": "SessionId.9bae1e7f-7683-420e-b744-dd87eda5c7ef",
+    "application": {
+      "applicationId": "amzn1.ask.skill.f63c8bdf-dce3-43a8-abd0-c6e712218eb3"
+    },
+    "attributes": {},
+    "user": {
+      "userId": "amzn1.ask.account.AHPOP4JW6F7JFECO7HLW4ZNDRIW6DNLLUBQBMMOLZE3AA3OUR5GDDXL5HTOHRWQOVAAMMSCR7FROAHPQYKKTXRDNEHQ2SID3CIVEYIXD42MI2OWUAHC2MLRMEK6HT6SUZKJAJHXV33VRMLYONVO3TWF4GVVIRDEFJENV3T25KN7QE447PEOIM5Z66KISUFPWXOAWKHKK5MAGVRY"
+    }
+  },
+  "request": {
+    "type": "IntentRequest",
+    "requestId": "EdwRequestId.d489a94d-d8e2-4154-8fc9-6ee382354ad6",
+    "intent": {
+      "name": "StartNewMPIInspection",
+      "slots": {
+        "Vehicle": {
+          "name": "Vehicle",
+          "value": "Toyota corolla 2012"
+        },
+        "Customer": {
+          "name": "Customer",
+          "value": "joe"
+        }
+      }
+    },
+    "locale": "en-US",
+    "timestamp": "2017-09-22T17:48:16Z"
+  },
+  "context": {
+    "AudioPlayer": {
+      "playerActivity": "IDLE"
+    },
+    "System": {
+      "application": {
+        "applicationId": "amzn1.ask.skill.f63c8bdf-dce3-43a8-abd0-c6e712218eb3"
+      },
+      "user": {
+        "userId": "amzn1.ask.account.AHPOP4JW6F7JFECO7HLW4ZNDRIW6DNLLUBQBMMOLZE3AA3OUR5GDDXL5HTOHRWQOVAAMMSCR7FROAHPQYKKTXRDNEHQ2SID3CIVEYIXD42MI2OWUAHC2MLRMEK6HT6SUZKJAJHXV33VRMLYONVO3TWF4GVVIRDEFJENV3T25KN7QE447PEOIM5Z66KISUFPWXOAWKHKK5MAGVRY"
+      },
+      "device": {
+        "supportedInterfaces": {}
+      }
+    }
+  },
+  "version": "1.0"
+}

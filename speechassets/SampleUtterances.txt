@@ -1,3 +1,4 @@
-MarkInspectionCondition Mark {InspectionItem} as {Condition}
+Start new multi point inspection for Toyota Camry 2012 owned by Joe	
+MarkInspectionCondition Mark Battery condition as good
 MarkInspectionCondition {InspectionItem} is {Condition}
 MarkInspectionCondition Mark {InspectionItem} {Condition}
