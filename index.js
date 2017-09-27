@@ -1,11 +1,13 @@
 'use strict';
 
 var Alexa = require('alexa-sdk');
+var AWS = require('aws-sdk');
+var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
 exports.handler = function(event, context, callback){
     var alexa = Alexa.handler(event, context, callback);
 	alexa.appId = "amzn1.ask.skill.f63c8bdf-dce3-43a8-abd0-c6e712218eb3";
-	alexa.dynamoDBTableName = 'VehicleInspection';
+	//alexa.dynamoDBTableName = 'MPIInspection';
 	alexa.registerHandlers(handlers);
 	alexa.execute();
 };
@@ -58,9 +60,8 @@ var handlers = {
         sessionAttributes["mpiInspection"] = inspection;
         console.log("New inspection object:" + JSON.stringify(inspection));
         
-        return this.emit(':ask', 'Starting new multi point inspection for ' + vehicle + ' owned by ' + customer + ', start registering vehicle condition',
+        return this.emit(':ask', 'Starting new inspection, please start registering vehicle condition',
         'Please say something like Mark battery condition as good');
-
     },
     
     'MarkInspectionCondition': function () {
@@ -76,19 +77,48 @@ var handlers = {
     	}
     	markVehicleCondition(sessionAttributes, inspectionItem, condition);
     	
-    	return this.emit(':ask', 'Marked ' + inspectionItem + ' as ' + condition);
+    	return this.emit(':ask', 'Done');
     },
     
-    'ResumeInspection': function() {
-    	
+    'CheckAllInspection': function() {
+    		
     },
     
     'AMAZON.StopIntent': function() {
         var sessionAttributes = this.event.session.attributes;
     	var inspectionObject = sessionAttributes["mpiInspection"];  
-    	this.attributes[inspectionObject.id] = inspectionObject;
-    	return this.emit(':tell', 'Multi point inspection saved successfully');
+    	var customer = inspectionObject.customer;
+    	var vehicle = inspectionObject.vehicle;
+    	var date = inspectionObject.date;
+    	var inspection = inspectionObject.inspections;
     	
+	var params = {
+		TableName: 'MPIInspection',
+		Item: {
+			Customer: {
+		       S: customer
+			},
+			Date: {
+				S:date
+			}
+		}
+	};
+	
+	dynamodb.putItem(params, 
+		function(err, data) {
+        	if (err) {
+            	console.log('error','putting item into dynamodb failed: '+err);
+        	}
+        	else {
+            	console.log('great success: '+JSON.stringify(data, null, '  '));
+        	}
+    	}
+    ); 	
+    	return this.emit(':tell', 'Multi point inspection saved successfully');
+    },
+    
+    'LinkAccount' : function() {
+    	return this.emit(':tellWithLinkAccountCard', 'Hello there');
     }
 
 };
