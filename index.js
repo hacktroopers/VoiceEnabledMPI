@@ -3,6 +3,7 @@
 var Alexa = require('alexa-sdk');
 var AWS = require('aws-sdk');
 var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+var marshalItem = require('dynamodb-marshaler').marshalItem;
 
 exports.handler = function(event, context, callback){
     var alexa = Alexa.handler(event, context, callback);
@@ -16,21 +17,14 @@ function getNewInspectionObject(customer, vehicle) {
 	var inspectionObject = {};
 	var date = new Date();
   	var inspectionId = Math.floor(Math.random() * 1000);
-    inspectionObject = {"id":inspectionId, "customer":customer, "vehicle":vehicle, "date":date, "inspections": []};
+    inspectionObject = {"id":inspectionId, "customer":customer, "vehicle":vehicle, "date":date, "inspections": {}};
     return inspectionObject;
 }
 
 function markVehicleCondition(sessionAttributes, inspectionItem, condition) {
 	var inspection = sessionAttributes["mpiInspection"];
-	var inspectionMap = {};
+	var inspectionMap = inspection['inspections'];
 	inspectionMap[inspectionItem] = condition;
-	if(inspection['inspections'] != null) {
-		inspection['inspections'].push(inspectionMap);
-	}
-	else {
-	 inspection['inspections'] = [];
-	 inspection['inspections'].push(inspectionMap);
-	}
     console.log("Marked condition" + JSON.stringify(inspection));
     sessionAttributes['mpiInspection'] = inspection;
 }
@@ -90,21 +84,30 @@ var handlers = {
     	var customer = inspectionObject.customer;
     	var vehicle = inspectionObject.vehicle;
     	var date = inspectionObject.date;
-    	var inspection = inspectionObject.inspections;
+    	var inspectionMap = inspectionObject.inspections;
     	
-	var params = {
-		TableName: 'MPIInspection',
-		Item: {
-			Customer: {
-		       S: customer
+	var item = {
+			'Customer': {
+		       'S': customer
 			},
-			Date: {
-				S:date
+			'Date': {
+				'S': date
 			}
-		}
-	};
-	
-	dynamodb.putItem(params, 
+			
+		};
+	if(vehicle) {
+		item.vehicle = {'S':vehicle};
+	}
+	if(inspectionMap) {
+		var marshalled = marshalItem(inspectionMap);
+		console.log("Marshalled obj" + marshalled);
+	    item.inspectionItem = {'M':marshalled};
+	}
+	console.log('InspectionMap:' + JSON.stringify(inspectionMap, null, '  '));
+	dynamodb.putItem({
+	    
+		'TableName': 'MPIInspection',
+		'Item': item}, 
 		function(err, data) {
         	if (err) {
             	console.log('error','putting item into dynamodb failed: '+err);
@@ -112,9 +115,9 @@ var handlers = {
         	else {
             	console.log('great success: '+JSON.stringify(data, null, '  '));
         	}
-    	}
-    ); 	
-    	return this.emit(':tell', 'Multi point inspection saved successfully');
+    	}); 	
+    	
+    			return this.emit(':tell', 'Multi point inspection saved successfully');
     },
     
     'LinkAccount' : function() {
