@@ -1,4 +1,22 @@
-Start new multi point inspection for Toyota Camry 2012 owned by Joe	
-MarkInspectionCondition Mark Battery condition as good
-MarkInspectionCondition {InspectionItem} is {Condition}
-MarkInspectionCondition Mark {InspectionItem} {Condition}
+Ready Stormborn
+Start new Inspection
+
+Joe Smith
+
+Nissan Sentra 2012
+
+Mark Brakes as Good
+
+Mark Battery Condition as Fair
+
+Mark Wiper Blades as Good
+
+Mark Wheels as Good
+
+Mark Wheels as Bad
+
+Any more inspections left?
+
+Mark Steering and Axles as Poor
+
+Multi point inspection completed
