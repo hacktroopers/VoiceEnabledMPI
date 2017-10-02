@@ -1,33 +1,30 @@
 {
   "session": {
-    "new": true,
+    "new": false,
     "sessionId": "SessionId.a758aec1-0a14-43bc-815c-1e56b7258817",
     "application": {
       "applicationId": "amzn1.ask.skill.f63c8bdf-dce3-43a8-abd0-c6e712218eb3"
     },
-    "attributes": {},
+    "attributes": {"mpiInspection": {
+        "id": 93,
+        "customer": "joe",
+        "vehicle": "Toyota corolla 2012",
+        "date": "2017-09-22T17:48:16.510Z",
+        "inspections": [{"battery condition":"good"},{"brakes":"fair"}]
+      }},
     "user": {
       "userId": "amzn1.ask.account.AHPOP4JW6F7JFECO7HLW4ZNDRIW6DNLLUBQBMMOLZE3AA3OUR5GDDXL5HTOHRWQOVAAMMSCR7FROAHPQYKKTXRDNEHQ2SID3CIVEYIXD42MI2OWUAHC2MLRMEK6HT6SUZKJAJHXV33VRMLYONVO3TWF4GVVIRDEFJENV3T25KN7QE447PEOIM5Z66KISUFPWXOAWKHKK5MAGVRY"
     }
   },
   "request": {
     "type": "IntentRequest",
-    "requestId": "EdwRequestId.048f135d-cf4d-486c-9c27-f6a3ae9bec36",
+    "requestId": "EdwRequestId.e1375da5-ee39-4461-91db-e50375510a0e",
     "intent": {
-      "name": "StartNewMPIInspection",
-      "slots": {
-        "Vehicle": {
-          "name": "Vehicle",
-          "value":"Nissan Sentra 2012"
-        },
-        "Customer": {
-          "name": "Customer",
-          "value":"Smith"
-        }
-      }
+      "name": "AMAZON.StopIntent",
+      "slots": {}
     },
     "locale": "en-US",
-    "timestamp": "2017-09-27T22:34:07Z"
+    "timestamp": "2017-09-27T23:13:23Z"
   },
   "context": {
     "AudioPlayer": {
