@@ -1,23 +1,302 @@
 {
   "intents": [
     {
+      "name": "AMAZON.CancelIntent",
+      "samples": [
+        "Cancel multi point inspection"
+      ]
+    },
+    {
+      "name": "AMAZON.HelpIntent",
+      "samples": []
+    },
+    {
+      "name": "AMAZON.StopIntent",
+      "samples": [
+        "Multi point inspection completed",
+        "Inspection is done"
+      ]
+    },
+    {
+      "name": "CheckAllInspection",
+      "samples": [
+        "Is there any Inspection left",
+        "Are there any inspections pending",
+        "Are there any inspections left",
+        "Any more inspections left"
+      ],
+      "slots": []
+    },
+    {
+      "name": "LinkAccount",
+      "samples": [
+        "Connect Xtime Account"
+      ],
+      "slots": []
+    },
+    {
+      "name": "MarkInspectionCondition",
+      "samples": [
+        "Mark {InspectionItem} as {Condition}",
+        "Mark {InspectionItem} is {Condition}",
+        "{InspectionItem} is {Condition}"
+      ],
       "slots": [
         {
           "name": "InspectionItem",
-          "type": "InspectionItemType"
+          "type": "InspectionItemName",
+          "samples": [
+            "{InspectionItem}"
+          ]
         },
         {
           "name": "Condition",
-          "type": "ConditionType"
+          "type": "ConditionType",
+          "samples": [
+            "{Condition}"
+          ]
         }
+      ]
+    },
+    {
+      "name": "StartNewMPIInspection",
+      "samples": [
+        "Start new inspection"
       ],
-      "intent": "MarkInspectionCondition"
-    },
-    {
-      "intent": "AMAZON.HelpIntent"
-    },
-    {
-      "intent": "AMAZON.StopIntent"
+      "slots": [
+        {
+          "name": "Customer",
+          "type": "LAST_NAME",
+          "samples": [
+            "Its {Customer}",
+            "It is {Customer}",
+            "{Customer}"
+          ]
+        },
+        {
+          "name": "Vehicle",
+          "type": "VehicleType",
+          "samples": [
+            "{Vehicle}",
+            "Vehicle is a {Vehicle}",
+            "Its {Vehicle}"
+          ]
+        }
+      ]
     }
-  ]
+  ],
+  "types": [
+    {
+      "name": "ConditionType",
+      "values": [
+        {
+          "id": null,
+          "name": {
+            "value": "Good",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Fair",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Poor",
+            "synonyms": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "InspectionItemName",
+      "values": [
+        {
+          "id": null,
+          "name": {
+            "value": "Battery condition",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Brakes",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Steering and Axles",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Wiper Blades",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Wheels",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Oil Level",
+            "synonyms": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "LAST_NAME",
+      "values": [
+        {
+          "id": null,
+          "name": {
+            "value": "Joe Smith",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Hacker",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Hallaway",
+            "synonyms": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "VehicleType",
+      "values": [
+        {
+          "id": null,
+          "name": {
+            "value": "nissan sentra 2012",
+            "synonyms": []
+          }
+        }
+      ]
+    }
+  ],
+  "prompts": [
+    {
+      "id": "Elicit.Intent-MarkInspectionCondition.IntentSlot-InspectionItem",
+      "promptVersion": "1.0",
+      "definitionVersion": "1.0",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "What is the inspection item name?"
+        }
+      ]
+    },
+    {
+      "id": "Elicit.Intent-MarkInspectionCondition.IntentSlot-Condition",
+      "promptVersion": "1.0",
+      "definitionVersion": "1.0",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "What is the inspection item condition?"
+        }
+      ]
+    },
+    {
+      "id": "Elicit.Intent-StartNewMPIInspection.IntentSlot-Customer",
+      "promptVersion": "1.0",
+      "definitionVersion": "1.0",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "What is the customer's last name?"
+        }
+      ]
+    },
+    {
+      "id": "Elicit.Intent-StartNewMPIInspection.IntentSlot-Vehicle",
+      "promptVersion": "1.0",
+      "definitionVersion": "1.0",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "What is the vehicle make model year"
+        }
+      ]
+    }
+  ],
+  "dialog": {
+    "version": "1.0",
+    "intents": [
+      {
+        "name": "MarkInspectionCondition",
+        "confirmationRequired": false,
+        "prompts": {},
+        "slots": [
+          {
+            "name": "InspectionItem",
+            "type": "InspectionItemName",
+            "elicitationRequired": true,
+            "confirmationRequired": false,
+            "prompts": {
+              "elicit": "Elicit.Intent-MarkInspectionCondition.IntentSlot-InspectionItem"
+            }
+          },
+          {
+            "name": "Condition",
+            "type": "ConditionType",
+            "elicitationRequired": true,
+            "confirmationRequired": false,
+            "prompts": {
+              "elicit": "Elicit.Intent-MarkInspectionCondition.IntentSlot-Condition"
+            }
+          }
+        ]
+      },
+      {
+        "name": "StartNewMPIInspection",
+        "confirmationRequired": false,
+        "prompts": {},
+        "slots": [
+          {
+            "name": "Customer",
+            "type": "LAST_NAME",
+            "elicitationRequired": true,
+            "confirmationRequired": false,
+            "prompts": {
+              "elicit": "Elicit.Intent-StartNewMPIInspection.IntentSlot-Customer"
+            }
+          },
+          {
+            "name": "Vehicle",
+            "type": "VehicleType",
+            "elicitationRequired": true,
+            "confirmationRequired": false,
+            "prompts": {
+              "elicit": "Elicit.Intent-StartNewMPIInspection.IntentSlot-Vehicle"
+            }
+          }
+        ]
+      }
+    ]
+  }
 }
